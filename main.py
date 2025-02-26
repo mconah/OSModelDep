@@ -57,7 +57,19 @@ def display_instructions():
 
 commands = ["%%change model", "%%list model", "%%quit", "%%download model", "%%delete model", "%%instructions", "%%introduction"]
 
+
+def list_models() -> list:
+    existing_models = ollama.list()
+    models_list = []
+    print("AVAILABLE MODELS ARE:/n ")
+    for models in existing_models.models:
+        models_list.append(models.model)
+    return models_list
+
 model = "qwen2:1.5b"
+
+if model not in list_models():
+    ollama.pull(model)
 
 print(display_intro())
 while True:
@@ -66,16 +78,35 @@ while True:
 
     if prompt in commands:
         if prompt == "%%change model":
-            pass
+            for model in list_models():
+                print(model)
+            model_to_use = input("What model do you want to use? ")
+            if model_to_use in list_models():
+                model = model_to_use
+                print(f"Booyaaah!! /nModels successfully changed to {model}")
+            else:
+                print("Ooops!! /n Model not in list of models /nTry again")
         if prompt =="%%list model":
             models = ollama.list()
-            print(models.models[].model)
+            for model in list_models():
+                print(model)
         if prompt == "%%quit":
             break
         if prompt == "%%download model":
-            pass
+            model_to_download = input("What model do you want to download? ")
+            try:
+                ollama.pull(model_to_download)
+                print("Successful")
+            except:
+                print("Ooops! Failed. Ensure that the model name is correct and try again")
         if prompt == "%%delete model":
-            pass
+            print(list_models())
+            model_to_delete = input("What model do you want to delete? ")
+            if model_to_delete in list_models():
+                ollama.delete(model_to_delete)
+                print(f"You have deleted {model_to_delete}")
+            else:
+                print(f"{model_to_delete} was not found. /nTry again!!")
         if prompt == "%%instructions":
             print(display_instructions())
         if prompt == "%%introduction":
