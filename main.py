@@ -18,16 +18,11 @@ def response(model, prompt):
 
 
 def display_intro():
-    return """Welcome to this Demo By Mmaduabuci Onah for NSK.AI
-    At NSK.AI we are focused at practical utilization of AI and how it impacts your life
-
-    ENJOY!!! THE POWER OF INTENTIONAL COMMUNITY
+    return """Welcome to this Demo By Mmaduabuci Onah 
 
     NOTE: This is a simple demo to show how to work with open-source models which can be easily accessed via Ollama.
     
     Input %%instructions to view the instructions
-
-    @NSK.AI Lab
     """
 
 def display_instructions():
@@ -66,7 +61,7 @@ def list_models() -> list:
         models_list.append(models.model)
     return models_list
 
-model = "qwen2:1.5b"
+model = "qwen2.5:0.5b"
 
 if model not in list_models():
     ollama.pull(model)
